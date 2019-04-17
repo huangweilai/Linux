@@ -24,6 +24,7 @@ cp /etc/ssh/sshd_config /etc/ssh/sshd_config-bak
 cp /etc/ssh/ssh_config /etc/ssh/ssh_config-bak
 sed -i -e 's/#UseDNS yes/UseDNS no/g' -e 's/GSSAPIAuthentication yes/GSSAPIAuthentication no/g' /etc/ssh/sshd_config
 sed -i '$a StrictHostKeyChecking no' /etc/ssh/ssh_config
+systemctl restart sshd >/dev/null 2>&1
 /etc/rc.d/init.d/sshd restart >/dev/null 2>&1
 }
 
