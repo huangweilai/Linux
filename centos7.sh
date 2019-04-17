@@ -18,6 +18,15 @@ tar cf /etc/yum.repos.d/bak_repo.tar.gz /etc/yum.repos.d/*  >/dev/null 2>&1
 tar cf /etc/sysconfig/network-scripts/bak_ifcfg.tar.gz /etc/sysconfig/network-scripts/* >/dev/null 2>&1
 }
 
+# 配置ssh
+ssh_conf(){
+cp /etc/ssh/sshd_config /etc/ssh/sshd_config-bak
+cp /etc/ssh/ssh_config /etc/ssh/ssh_config-bak
+sed -i -e 's/#UseDNS yes/UseDNS no/g' -e 's/GSSAPIAuthentication yes/GSSAPIAuthentication no/g' /etc/ssh/sshd_config
+sed -i '$a StrictHostKeyChecking no' /etc/ssh/ssh_config
+/etc/rc.d/init.d/sshd restart >/dev/null 2>&1
+}
+
 # 安装工具
 Setup_tool(){
 curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo >/dev/null 2>&1
@@ -41,6 +50,7 @@ ip add | grep "scope global" | awk '{print $NF,$2}'
 # 执行
 check_sys
 Backup_conf
+ssh_conf
 Setup_tool
 Disable_firewall
 get_ip
