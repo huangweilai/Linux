@@ -75,7 +75,7 @@ set_datime
 make_yum(){
 rm -rf /etc/yum.repos.d/*.repo
 echo -e "[local] \nname=local \nbaseurl=file:///mnt/ \ngpgcheck=0 \nenable=1 \ngpgkey=file:///mnt/" > local.repo
-mount -t iso9660 /dev/sr0 /mnt >/dev/null 2>&1 && yum clean all >/dev/null 2>&1 && yum makecache >/dev/null 2>&1
+mount -t iso9660 /dev/sr0 /mnt >/dev/null 2>&1 && yum clean all >/dev/null 2>&1 && yum makecache > /dev/null 2>&1
 Setup_tool
 sleep 2
 }
