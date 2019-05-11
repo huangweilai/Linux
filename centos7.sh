@@ -47,6 +47,12 @@ get_ip(){
 ip add | grep "scope global" | awk '{print $NF,$2}' 
 }
 
+# set_PS1
+set_envps1(){
+echo 'PS1="\[\e[1;37;40m\]\[\e[1;32;40m\]\u\[\e[1;33;40m\]@\h \[\e[1;36;40m\]\w\[\e[0m\] \\$"' > /etc/profile.d/env.sh
+source /etc/profile.d/env.sh
+}
+
 # 执行
 check_sys
 Backup_conf
@@ -54,7 +60,7 @@ ssh_conf
 Setup_tool
 Disable_firewall
 get_ip
-
+set_envps1
 
 :<<!
 # 创建yum仓库
