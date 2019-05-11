@@ -15,8 +15,8 @@ sys_release=`cat /etc/redhat-release | awk '{printf $1;print $3}' | cut -c1-7`
 # 备份文件
 Backup_conf(){
 cp -p /etc/selinux/config /etc/selinux/config.bak
-tar cf /etc/yum.repos.d/bak_repo.tar.gz /etc/yum.repos.d/*  >/dev/null 2>&1
-tar cf /etc/sysconfig/network-scripts/bak_ifcfg.tar.gz /etc/sysconfig/network-scripts/* >/dev/null 2>&1
+tar cf /etc/yum.repos.d/bak_repo.tar.gz /etc/yum.repos.d/*  > /dev/null 2>&1
+tar cf /etc/sysconfig/network-scripts/bak_ifcfg.tar.gz /etc/sysconfig/network-scripts/* > /dev/null 2>&1
 }
 
 # 配置ssh
@@ -25,22 +25,20 @@ cp /etc/ssh/sshd_config /etc/ssh/sshd_config-bak
 cp /etc/ssh/ssh_config /etc/ssh/ssh_config-bak
 sed -i -e 's/#UseDNS yes/UseDNS no/g' -e 's/GSSAPIAuthentication yes/GSSAPIAuthentication no/g' /etc/ssh/sshd_config
 sed -i '$a StrictHostKeyChecking no' /etc/ssh/ssh_config
-/etc/rc.d/init.d/sshd restart >/dev/null 2>&1
+/etc/rc.d/init.d/sshd restart > /dev/null 2>&1
 }
 
 # 安装工具
 Setup_tool(){
-curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo  >/dev/null 2>&1
-yum makecache >/dev/null 2>&1
-yum install telnet bash-c*  lrzsz net-tools wget openssh-clients vim -y  >/dev/null 2>&1
+curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo  > /dev/null 2>&1
+yum makecache > /dev/null 2>&1
+yum install telnet bash-c*  lrzsz net-tools wget openssh-clients vim -y  > /dev/null 2>&1
 }
-
-
 
 # 关闭防火墙和selinux
 Disable_firewall(){
-chkconfig iptables off  >/dev/null 2>&1
-service iptables stop  >/dev/null 2>&1
+chkconfig iptables off  > /dev/null 2>&1
+service iptables stop  > /dev/null 2>&1
 setenforce 0
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
 }
@@ -56,6 +54,13 @@ echo 'PS1="\[\e[1;37;40m\]\[\e[1;32;40m\]\u\[\e[1;33;40m\]@\H \[\e[1;36;40m\]\w\
 source /etc/profile.d/env.sh
 }
 
+set_datime(){
+yum -y install ntp ntpdate > /dev/null 2>&1
+ntpdate ntp.aliyun.com > /dev/null 2>&1
+hwclock --systohc > /dev/null 2>&1
+hwclock -w > /dev/null 2>&1
+}
+
 # 执行
 check_sys
 Backup_conf
@@ -64,7 +69,7 @@ Setup_tool
 Disable_firewall
 get_ip
 set_envps1
-
+set_datime
 
 
 
@@ -73,7 +78,7 @@ set_envps1
 make_yum(){
 rm -rf /etc/yum.repos.d/*.repo
 echo -e "[local] \nname=local \nbaseurl=file:///mnt/ \ngpgcheck=0 \nenable=1 \ngpgkey=file:///mnt/" > local.repo
-mount -t iso9660 /dev/sr0 /mnt >/dev/null 2>&1 && yum clean all >/dev/null 2>&11 && yum makecache >/dev/null 2>&1
+mount -t iso9660 /dev/sr0 /mnt >/dev/null 2>&1 && yum clean all >/dev/null 2>&11 && yum makecache > /dev/null 2>&1
 Setup_tool
 sleep 2
 }
