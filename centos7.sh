@@ -14,8 +14,9 @@ sys_release=`cat /etc/redhat-release | awk '{printf $1;print $4}' | cut -c1-7`
 # 备份文件
 Backup_conf(){
 cp -p /etc/selinux/config /etc/selinux/config.bak
-tar cf /etc/yum.repos.d/bak_repo.tar.gz /etc/yum.repos.d/*  > /dev/null 2>&1
-tar cf /etc/sysconfig/network-scripts/bak_ifcfg.tar.gz /etc/sysconfig/network-scripts/* > /dev/null 2>&1
+tar -cPf /etc/yum.repos.d/repo-bak.tar /etc/yum.repos.d/*.repo
+mkdir /etc/yum.repos.d/bak/;mv *.repo /etc/yum.repos.d/bak/
+tar -cPf /etc/sysconfig/network-scripts/ifconfig-bak.tar /etc/sysconfig/network-scripts/*
 }
 
 # 配置ssh
