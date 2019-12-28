@@ -6,13 +6,13 @@ This Scripts For CentOS6 ！
 !
 # 检查用户
 check_user(){
-[[ $UID != "0" ]] ||  echo -e "exit, this script does not support the current user!" && exit 1
+[[ $UID != "0" ]] && echo -e"exit, this script does not support the current user!" && exit 1
 }
 
 # 检查系版本
 check_sys(){
 sys_release=`cat /etc/redhat-release | awk '{printf $1;print $3}' | cut -c1-7`
-[[ $sys_release != "CentOS6" ]] && echo -e "exit, this script does not support the current system!" && exit 2
+[[ $sys_release != "CentOS6" ]] && echo -e "exit, this script does not support the current system" && exit 2
 }
 
 # 备份文件
