@@ -8,7 +8,7 @@ This Scripts For CentOS6 ！
 
 # 检查用户
 check_user(){
-[[ $UID != 0 ]] && echo "this script does not support the current user" && exit 1
+[[ $UID != "0" ]] && echo "this script does not support the current user" && exit 1
 }
 
 # 检查系统版本
